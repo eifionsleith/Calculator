@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        *{
+            font-family: Segoe UI Symbol, Arial Unicode MS, sans-serif;
+        }
+
+        .calculator {
+            width: 400px;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .display {
+            height: 80px;
+            font-size: 36px;
+            background-color: lightgray;
+            padding: 20px;
+            box-shadow: 0px 0px 10px 0px lightgray;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(5, 1fr);
+            grid-gap: 20px;
+        }
+
+        button {
+            height: 80px;
+            width: 80px;
+            background-color: white;
+            border: 1px solid lightgray;
+            font-size: 24px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .operator {
+            background-color: lightgray;
+            color: white;
+        }
+
+        /* Make the "C" and "=" buttons two times wider */
+        .operator[value="clear"], .operator[value="="] {
+            width: 185px;
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+<div class="calculator">
+    <div class="display">0</div>
+    <div class="buttons">
+        <button class="operator" value="clear">C</button>
+        <button class="operator" value="backspace">⌫</button>
+        <button class="operator" value="/">÷</button>
+        <button value="7">7</button>
+        <button value="8">8</button>
+        <button value="9">9</button>
+        <button class="operator" value="*">×</button>
+        <button value="4">4</button>
+        <button value="5">5</button>
+        <button value="6">6</button>
+        <button class="operator" value="-">−</button>
+        <button value="1">1</button>
+        <button value="2">2</button>
+        <button value="3">3</button>
+        <button class="operator" value="+">+</button>
+        <button value="0">0</button>
+        <button class="operator" value=".">.</button>
+        <button class="operator" value="=">=</button>
+    </div>
+</div>
+
+<script>
+    const calculator = {
+        display: document.querySelector(".display"),
+        btns: document.querySelectorAll("button"),
+        clear() {
+            this.display.textContent = "0";
+        },
+        backspace() {
+            this.display.textContent = this.display.textContent.slice(0, -1);
+            if (this.display.textContent === "") {
+                this.display.textContent = "0";
+            }
+        },
+        equateSum: false,
+        operate(value) {
+            if (value === "clear") {
+                this.clear();
+            } else if (value === "backspace") {
+                this.backspace();
+            } else if (value === "=") {
+                try {
+                    this.display.textContent = eval(this.display.textContent);
+                    this.equateSum = true;
+                } catch (error) {
+                    this.display.textContent = "Error";
+                    this.equateSum = false;
+                }
+            } else if (
+                this.display.textContent === "0" ||
+                this.display.textContent === "Error" ||
+                (this.equateSum && !isNaN(value))
+            ) {
+                this.clear();
+                this.display.textContent = value;
+                this.equateSum = false;
+            } else {
+                this.display.textContent += value;
+            }
+        },
+    };
+
+    calculator.btns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            calculator.operate(btn.value);
+        });
+    });
+
+</script>
+</body>
+</html>
