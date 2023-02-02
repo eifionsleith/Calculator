@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+TODO -> ADD RESPONSIVE DESIGN. MOBILE VIEW.
+TODO -> ADD KEYBOARD INPUT.
+-->
+
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -82,7 +88,7 @@
 <script>
     const calculator = {
         display: document.querySelector(".display"),
-        btns: document.querySelectorAll("button"),
+        buttons: document.querySelectorAll("button"),
         clear() {
             this.display.textContent = "0";
         },
@@ -94,6 +100,7 @@
         },
         equateSum: false,
         operate(value) {
+            const isOperator = event.target.classList.contains("operator");
             switch (value) {
                 case "clear":
                     this.clear();
@@ -110,12 +117,10 @@
                         this.equateSum = false;
                     }
                     break;
-                case "+":
-                case "-":
-                case "*":
-                case "/":
-                    this.equateSum = false;
                 default:
+                    if (isOperator)
+                        this.equateSum = false;
+
                     if (
                         this.display.textContent === "0" ||
                         this.display.textContent === "Error" ||
@@ -132,7 +137,7 @@
         },
     };
 
-    calculator.btns.forEach((btn) => {
+    calculator.buttons.forEach((btn) => {
         btn.addEventListener("click", () => {
             calculator.operate(btn.value);
         });
