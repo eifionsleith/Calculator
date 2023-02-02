@@ -94,28 +94,40 @@
         },
         equateSum: false,
         operate(value) {
-            if (value === "clear") {
-                this.clear();
-            } else if (value === "backspace") {
-                this.backspace();
-            } else if (value === "=") {
-                try {
-                    this.display.textContent = eval(this.display.textContent);
-                    this.equateSum = true;
-                } catch (error) {
-                    this.display.textContent = "Error";
+            switch (value) {
+                case "clear":
+                    this.clear();
+                    break;
+                case "backspace":
+                    this.backspace();
+                    break;
+                case "=":
+                    try {
+                        this.display.textContent = eval(this.display.textContent);
+                        this.equateSum = true;
+                    } catch (error) {
+                        this.display.textContent = "Error";
+                        this.equateSum = false;
+                    }
+                    break;
+                case "+":
+                case "-":
+                case "*":
+                case "/":
                     this.equateSum = false;
-                }
-            } else if (
-                this.display.textContent === "0" ||
-                this.display.textContent === "Error" ||
-                (this.equateSum && !isNaN(value))
-            ) {
-                this.clear();
-                this.display.textContent = value;
-                this.equateSum = false;
-            } else {
-                this.display.textContent += value;
+                default:
+                    if (
+                        this.display.textContent === "0" ||
+                        this.display.textContent === "Error" ||
+                        (this.equateSum && !isNaN(value))
+                    ) {
+                        this.clear();
+                        this.display.textContent = value;
+                        this.equateSum = false;
+                    } else {
+                        this.display.textContent += value;
+                    }
+                    break;
             }
         },
     };
